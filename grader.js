@@ -20,14 +20,15 @@ References:
    - https://developer.mozilla.org/en-US/docs/JSON
    - https://developer.mozilla.org/en-US/docs/JSON#JSON_in_Firefox_2
 */
+var rest = require('restler');
+var util = require('util');
 
 var fs = require('fs');
 var program = require('commander');
 var cheerio = require('cheerio');
-var HTMLFILE_DEFAULT = "index.html";
+var content = rest.get("http://murmuring-fortress-1656.herokuapp.com")
+var HTMLFILE_DEFAULT = content;
 var CHECKSFILE_DEFAULT = "checks.json";
-var rest = require('restler');
-var util = require('util');
 
 var assertFileExists = function(infile) {
     var instr = infile.toString();
@@ -66,7 +67,7 @@ var clone = function(fn) {
 if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', assertFileExists, CHECKSFILE_DEFAULT)
-        .option('-f, --url <url>', 'Path to url')
+        .option('-u, --url <url>', 'Path to url')
         .parse(process.argv);
     var checkJson = checkHtmlFile(rest.get(program.url), program.checks);
     var outJson = JSON.stringify(checkJson, null, 4);
