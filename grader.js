@@ -66,7 +66,7 @@ var clone = function(fn) {
 if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'Path to checks.json', assertFileExists, CHECKSFILE_DEFAULT)
-        .option('-f, --url <url>', 'Path to url', assertFileExists)
+        .option('-f, --url <url>', 'Path to url')
         .parse(process.argv);
     var checkJson = checkHtmlFile(rest.get(program.url), program.checks);
     var outJson = JSON.stringify(checkJson, null, 4);
