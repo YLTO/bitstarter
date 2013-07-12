@@ -67,7 +67,7 @@ if(require.main == module) {
         .option('-c, --checks <check_file>', 'Path to checks.json', assertFileExists, CHECKSFILE_DEFAULT)
         .option('-f, --url <url>', 'Path to url', assertFileExists)
         .parse(process.argv);
-    var checkJson = checkHtmlFile(rest.get(apiurl).on('complete', response2console);, program.checks);
+    var checkJson = checkHtmlFile(rest.get(program.url), program.checks);
     var outJson = JSON.stringify(checkJson, null, 4);
     console.log(outJson);
 } else {
