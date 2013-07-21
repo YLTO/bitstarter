@@ -22,12 +22,10 @@ References:
 */
 var rest = require('restler');
 var util = require('util');
-
 var fs = require('fs');
 var program = require('commander');
 var cheerio = require('cheerio');
-var content = rest.get("http://murmuring-fortress-1656.herokuapp.com")
-var HTMLFILE_DEFAULT = content;
+var HTMLFILE_DEFAULT = "index.html";
 var CHECKSFILE_DEFAULT = "checks.json";
 
 var assertFileExists = function(infile) {
@@ -66,10 +64,13 @@ var clone = function(fn) {
 
 if(require.main == module) {
     program
-        .option('-c, --checks <check_file>', 'Path to checks.json', assertFileExists, CHECKSFILE_DEFAULT)
-        .option('-u, --url <url>', 'Path to url')
+        .option('-c, --checks <check_file>', 'Path to checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
+        .option('-u, --url <url>', 'url')
         .parse(process.argv);
-    var checkJson = checkHtmlFile(rest.get(program.url), program.checks);
+    rest.get(program.url).on('complete', function(result){
+	fs.writeFile("example.html",result);
+    });
+    var checkJson = checkHtmlFile("example.html", program.checks);
     var outJson = JSON.stringify(checkJson, null, 4);
     console.log(outJson);
 } else {
